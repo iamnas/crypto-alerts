@@ -9,7 +9,9 @@ module.exports = {
   extends: [
     'plugin:@typescript-eslint/recommended',
     'plugin:prettier/recommended',
+
   ],
+  "prettier/prettier": ["error", { "endOfLine": "off" }],
   root: true,
   env: {
     node: true,
