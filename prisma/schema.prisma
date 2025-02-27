@@ -1,0 +1,39 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Price {
+  id        String   @id @default(cuid())
+  chain     String
+  price     Decimal
+  timestamp DateTime @default(now())
+}
+
+model Alert {
+  id          String   @id @default(cuid())
+  chain       String
+  targetPrice Decimal
+  email       String
+  isTriggered Boolean  @default(false)
+  createdAt   DateTime @default(now())
+}
+
+model SwapRate {
+  id          String   @id @default(cuid())
+  ethAmount   Decimal
+  btcReceived Decimal
+  feeEth      Decimal
+  feeUsd      Decimal
+  timestamp   DateTime @default(now())
+}
