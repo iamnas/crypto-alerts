@@ -25,16 +25,10 @@ services:
     env_file:
       - .env
     environment:
-      DATABASE_URL: "postgresql://postgres:postgres@postgres:5432/crypto_db?schema=public"  # ✅ Use service name instead of localhost
-      MORALIS_API: ${MORALIS_API}
-      WETH: ${WETH}
-      WMATIC: ${WMATIC}
-      EMAIL_USER: ${EMAIL_USER}
-      EMAIL_PASS: ${EMAIL_PASS}
-      TZ_EMAIL: ${TZ_EMAIL}
+      DATABASE_URL: "postgresql://postgres:postgres@postgres:5432/crypto_db?schema=public"
     ports:
       - "3000:3000"
-    command: ["sh", "-c", "pnpm install && pnpm prisma migrate deploy && pnpm start"]  # ✅ Ensures dependencies are installed
+    command: ["sh", "-c", "pnpm install --frozen-lockfile && pnpm prisma migrate deploy && pnpm prisma generate && pnpm start"]
 
 volumes:
   postgres_data:
