@@ -1,9 +1,12 @@
-version: '1'
+version: '3.8'  # ✅ Updated to a supported version
+
 services:
-  db:
-    container_name: postgres_db
+  postgres:
     image: postgres:17
+    container_name: nest_postgres
     restart: always
+    env_file:
+      - .env
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -11,7 +14,27 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
+
+  nest-app:
+    build: .
+    container_name: nest_app
+    restart: always
+    depends_on:
+      - postgres
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: "postgresql://postgres:postgres@postgres:5432/crypto_db?schema=public"  # ✅ Use service name instead of localhost
+      MORALIS_API: ${MORALIS_API}
+      WETH: ${WETH}
+      WMATIC: ${WMATIC}
+      EMAIL_USER: ${EMAIL_USER}
+      EMAIL_PASS: ${EMAIL_PASS}
+      TZ_EMAIL: ${TZ_EMAIL}
+    ports:
+      - "3000:3000"
+    command: ["sh", "-c", "pnpm install && pnpm prisma migrate deploy && pnpm start"]  # ✅ Ensures dependencies are installed
 
 volumes:
-  pgdata:
+  postgres_data:
