@@ -1,73 +1,79 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Crypto Alerts
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Overview
+Crypto Alerts is a system that monitors token prices and sends alerts based on predefined conditions. It integrates with Moralis for blockchain data and uses email notifications for alerts.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Prerequisites
+Ensure you have the following installed before proceeding:
 
-## Description
+- [Docker](https://www.docker.com/)
+- [Docker Compose](https://docs.docker.com/compose/install/)
+- [Node.js](https://nodejs.org/) (if running locally)
+- PostgreSQL (if running locally, otherwise use Docker)
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Environment Variables
+Before running the project, set up the `.env` file by copying `env.example`:
 
-## Installation
-
-```bash
-$ pnpm install
+```sh
+cp env.example .env
 ```
 
-## Running the app
+Update the `.env` file with your credentials.
 
-```bash
-# development
-$ pnpm run start
+### Example `.env` file:
+```ini
+# Database
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/crypto_db?schema=public"
 
-# watch mode
-$ pnpm run start:dev
+# Moralis API Key (Should be stored securely)
+MORALIS_API="your-secure-moralis-api-key"
 
-# production mode
-$ pnpm run start:prod
+# Token Addresses
+WETH="0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+WMATIC="0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270"
+
+# Email Credentials (Use App Passwords instead of real password)
+EMAIL_USER="your-email@gmail.com"
+EMAIL_PASS="your-app-password"
+
+# Alert Email
+TZ_EMAIL="your-email@gmail.com"
 ```
 
-## Test
+## Running the Project
 
-```bash
-# unit tests
-$ pnpm run test
+### Using Docker (Recommended)
+```sh
+docker-compose up --build
+```
+This will start the NestJS app and the PostgreSQL database.
 
-# e2e tests
-$ pnpm run test:e2e
+### Running Locally (Without Docker)
+1. Install dependencies:
+   ```sh
+   pnpm install
+   ```
+2. Run database migrations (if using Prisma):
+   ```sh
+   pnpm prisma migrate dev
+   ```
+3. Start the application:
+   ```sh
+   pnpm start
+   ```
 
-# test coverage
-$ pnpm run test:cov
+## Testing
+Run tests using:
+```sh
+pnpm test
 ```
 
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## Stopping Services
+To stop the running containers, use:
+```sh
+docker-compose down -v
+```
 
 ## License
+This project is licensed under the MIT License.
 
-Nest is [MIT licensed](LICENSE).
